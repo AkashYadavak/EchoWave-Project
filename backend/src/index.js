@@ -2,7 +2,8 @@
 
 import express from 'express';
 import dotenv from 'dotenv';
-import {connectDB} from '../lib/db.js'
+import { connectDB } from '../lib/db.js'
+import { clerkMiddleware } from '@clerk/express';
 
 import userRoutes from '../routes/user.routes.js';  // you need to write .js because of type module
 import authRoutes from '../routes/auth.routes.js';
@@ -16,6 +17,8 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json())  //parsing the json-formatted that, means converting the json formatted data in a format that our programming language understand
+
+app.use(clerkMiddleware());   // Add authn object in req's body. So we can access req.auth, req.auth.userId, etc
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
